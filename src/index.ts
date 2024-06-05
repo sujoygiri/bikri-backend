@@ -13,6 +13,7 @@ const PORT: number = 3000;
 const server = express();
 
 server.use(express.urlencoded({ extended: false }));
+server.use(express.json());
 
 server.use('/api/auth/seller', authRouter);
 
