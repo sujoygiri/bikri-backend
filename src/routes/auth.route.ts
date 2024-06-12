@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
 
-import { handelSellerSignUp } from "../controllers/auth.controller";
+import { handelSellerSignin, handelSellerSignUp } from "../controllers/auth.controller";
 
 const authRouter: Router = Router({ caseSensitive: true, strict: true });
 
@@ -10,5 +10,7 @@ const createSellerNameChain = () => body("username").trim().notEmpty().escape().
 const createPasswordChain = () => body("password").trim().notEmpty().escape().isStrongPassword({ minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 }).withMessage("Password must be 8 character long and contain 1 lowercase 1 uppercase 1 number 1 special character");
 
 authRouter.post("/signup", createSellerNameChain(), createEmailChain(), createPasswordChain(), handelSellerSignUp);
+
+authRouter.post("/signin",createEmailChain(),createPasswordChain(),handelSellerSignin)
 
 export { authRouter };

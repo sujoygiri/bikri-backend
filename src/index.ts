@@ -1,6 +1,7 @@
 import express from "express";
 import { join } from "node:path";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 dotenv.config({ path: join(__dirname, '../.env'), debug: true });
 
 import { createRelations } from "./util/dbInitialize";
@@ -14,6 +15,7 @@ const server = express();
 
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
+server.use(cookieParser())
 
 server.use('/api/auth/seller', authRouter);
 
