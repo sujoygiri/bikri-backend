@@ -1,3 +1,5 @@
+import { Jwt } from "jsonwebtoken";
+
 export type QueryConfig = {
     // the raw query text
     text: string;
@@ -15,3 +17,14 @@ export type QueryConfig = {
     // custom type parsers just for this query result
     // types?: Types;
 };
+
+export interface NewError extends Error {
+    statusCode: number;
+}
+
+export interface PayLoad extends Jwt {
+    sellername: string;
+    email: string;
+    iat: number;
+    exp: number;
+}

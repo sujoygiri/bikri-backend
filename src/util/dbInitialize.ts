@@ -1,17 +1,12 @@
 import * as db from "./db";
-import { QueryConfig } from "../types/queryConfigType";
+import { QueryConfig } from "../types/typesAndInterfaces";
 
 export async function createRelations() {
-    try {
-        await createSchema();
-        await changeSchema();
-        await createRoleEnum();
-        await createUserTable();
-        await createProductTable();
-        return `Db initialization successful`;
-    } catch (error) {
-        throw error;
-    }
+    await createSchema();
+    await changeSchema();
+    await createSellerTable();
+    await createProductTable();
+    return `Db initialization successful`;
 }
 
 async function createSchema() {
@@ -19,7 +14,6 @@ async function createSchema() {
         text: `CREATE SCHEMA IF NOT EXISTS bikridotcomschema;`
     };
     await db.query(createSchemaQuery);
-
 }
 
 async function changeSchema() {
@@ -29,25 +23,13 @@ async function changeSchema() {
     await db.query(queryConfig);
 }
 
-async function createRoleEnum() {
-    const dropRoleEnumQuery: QueryConfig = {
-        text: `DROP TYPE IF EXISTS user_role CASCADE`
-    };
-    await db.query(dropRoleEnumQuery);
-    const createRoleEnumQuery: QueryConfig = {
-        text: `CREATE TYPE user_role AS ENUM ('admin', 'seller', 'user');`
-    };
-    await db.query(createRoleEnumQuery);
-}
-
-async function createUserTable() {
+async function createSellerTable() {
     const queryConfig: QueryConfig = {
-        text: `CREATE TABLE IF NOT EXISTS users (
+        text: `CREATE TABLE IF NOT EXISTS sellers (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            userName VARCHAR(100) NOT NULL,
+            sellername VARCHAR(100) NOT NULL,
             email VARCHAR(500) UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            role user_role DEFAULT 'user'
+            password TEXT NOT NULL
         )`
     };
     await db.query(queryConfig);
@@ -57,6 +39,7 @@ async function createProductTable() {
     const queryConfig: QueryConfig = {
         text: `CREATE TABLE IF NOT EXISTS products (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            seller_id UUID REFERENCES sellers(id),
             name VARCHAR(500) NOT NULL,
             specification TEXT NOT NULL,
             price VARCHAR(2) NOT NULL,

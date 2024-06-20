@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { QueryConfig } from "../types/queryConfigType";
+import { QueryConfig } from "../types/typesAndInterfaces";
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 

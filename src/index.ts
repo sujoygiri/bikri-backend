@@ -6,6 +6,8 @@ dotenv.config({ path: join(__dirname, '../.env'), debug: true });
 
 import { createRelations, resetDb } from "./util/dbInitialize";
 import { authRouter } from "./routes/auth.route";
+import { productRouter } from "./routes/product.route";
+import { handelError } from "./util/errorHandler";
 
 
 const HOST: string = "127.0.0.1";
@@ -18,21 +20,28 @@ server.use(express.json());
 server.use(cookieParser());
 
 server.use('/api/auth/seller', authRouter);
+server.use('/api/product',productRouter);
 
 server.get('/reset-db', async (req, res, next) => {
-  let response = await resetDb();
-  res.json({ msg: response });
+  try {
+    let response = await resetDb();
+    res.json({ msg: response });
+  } catch (error) {
+    next(error);
+  }
 });
 
 server.get('/initialize-db', async (req, res, next) => {
-  let response = await createRelations();
-  res.json({ msg: response });
+  try {
+    let response = await createRelations();
+    res.json({ msg: response });
+  } catch (error) {
+    next(error);
+  }
 });
 
+server.use(handelError)
+
 server.listen(PORT, HOST, async () => {
-  try {
-    console.log(`Server is running on http://${HOST}:${PORT}`);
-  } catch (error) {
-    console.log(error);
-  }
+  console.log(`Server is running on http://${HOST}:${PORT}`);
 });
