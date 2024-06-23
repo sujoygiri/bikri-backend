@@ -15,12 +15,12 @@ const PORT: number = 3000;
 
 const server = express();
 
-server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
+server.use(express.urlencoded({ extended: false }));
 server.use(cookieParser());
 
 server.use('/api/auth/seller', authRouter);
-server.use('/api/product',productRouter);
+server.use('/api/product', productRouter);
 
 server.get('/reset-db', async (req, res, next) => {
   try {
@@ -40,7 +40,7 @@ server.get('/initialize-db', async (req, res, next) => {
   }
 });
 
-server.use(handelError)
+server.use(handelError);
 
 server.listen(PORT, HOST, async () => {
   console.log(`Server is running on http://${HOST}:${PORT}`);

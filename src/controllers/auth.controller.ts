@@ -90,7 +90,7 @@ export function handelSellerSignin(
     }
 }
 
-export function handelAuthorization(req: Request, res: Response, next: NextFunction) {
+export function verifyToken(req: Request, res: Response, next: NextFunction) {
     let jwtToken = req.cookies['_token'];
     if (jwtToken) {
         jwt.verify(jwtToken, process.env.JWT_SECRET as string, { algorithms: ['HS512'] }, (err, payload) => {
@@ -129,9 +129,3 @@ export function handelAuthorization(req: Request, res: Response, next: NextFunct
     }
 }
 
-/**
- * const {_token} = req.cookies;
-                jwt.verify(_token,'secret',{algorithms:['HS512']},(err,value)=>{
-                    res.json(value);
-                })
- */

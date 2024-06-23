@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
 
-import { handelSellerSignUp, handelSellerSignin, handelAuthorization } from "../controllers/auth.controller";
+import { handelSellerSignUp, handelSellerSignin, verifyToken } from "../controllers/auth.controller";
 
 const authRouter: Router = Router({ caseSensitive: true, strict: true });
 
@@ -13,6 +13,6 @@ authRouter.post("/signup", createSellerNameChain(), createEmailChain(), createPa
 
 authRouter.post("/signin", createEmailChain(), createPasswordChain(), handelSellerSignin);
 
-authRouter.get("/verify", handelAuthorization)
+authRouter.get("/verify", verifyToken);
 
 export { authRouter };

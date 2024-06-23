@@ -39,10 +39,12 @@ async function createProductTable() {
     const queryConfig: QueryConfig = {
         text: `CREATE TABLE IF NOT EXISTS products (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            seller_id UUID REFERENCES sellers(id),
+            seller_id UUID REFERENCES sellers(id) NOT NULL,
             name VARCHAR(500) NOT NULL,
-            specification TEXT NOT NULL,
-            price VARCHAR(2) NOT NULL,
+            description JSONB,
+            specification JSONB NOT NULL,
+            more_info JSONB NOT NULL,
+            price VARCHAR(8) NOT NULL,
             images TEXT ARRAY[10]
         )`
     };
